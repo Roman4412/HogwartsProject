@@ -27,8 +27,9 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.deleteStudent(id));
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
@@ -39,5 +40,10 @@ public class StudentController {
     @GetMapping("/filter/{age}")
     public ResponseEntity<List<Student>> findByAge(@PathVariable int age) {
         return ResponseEntity.ok(studentService.findByAge(age));
+    }
+
+    @GetMapping
+    public ResponseEntity getAllStudents() {
+       return ResponseEntity.ok(studentService.getAllStudents());
     }
 }

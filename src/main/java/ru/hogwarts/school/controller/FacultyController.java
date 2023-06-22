@@ -27,8 +27,9 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
-        return ResponseEntity.ok(facultyService.deleteFaculty(id));
+    public ResponseEntity deleteFaculty(@PathVariable Long id) {
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
@@ -39,5 +40,10 @@ public class FacultyController {
     @GetMapping("/filter/{color}")
     public ResponseEntity<List<Faculty>> findByColor(@PathVariable String color) {
         return ResponseEntity.ok(facultyService.findByColor(color));
+    }
+
+    @GetMapping
+    public ResponseEntity getAllFaculty() {
+       return ResponseEntity.ok(facultyService.getAllFaculty());
     }
 }
