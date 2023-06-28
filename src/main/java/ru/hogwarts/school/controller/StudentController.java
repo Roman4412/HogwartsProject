@@ -1,8 +1,9 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.dto.FacultyDtoOut;
+import ru.hogwarts.school.dto.StudentDtoIn;
+import ru.hogwarts.school.dto.StudentDtoOut;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
@@ -17,33 +18,38 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.findStudent(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.createStudent(student));
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping
-    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.editStudent(student));
+    public StudentDtoOut getStudent(@PathVariable Long id) {
+        return studentService.findStudent(id);
     }
 
     @GetMapping("/filter/{age}")
-    public ResponseEntity<List<Student>> findByAge(@PathVariable int age) {
-        return ResponseEntity.ok(studentService.findByAge(age));
+    public List<StudentDtoOut> findByAge(@PathVariable int age) {
+        return studentService.findAllByAge(age);
     }
 
-    @GetMapping
-    public ResponseEntity getAllStudents() {
-       return ResponseEntity.ok(studentService.getAllStudents());
+    @GetMapping("/filter")
+    public List<StudentDtoOut> findByAgeBetween(@RequestParam int ageFrom, @RequestParam int ageTo) {
+        return studentService.findByAgeBetween(ageFrom, ageTo);
     }
+
+    @GetMapping("/{id}/faculty")
+    public FacultyDtoOut getFaculty(@PathVariable("id") long id) {
+        return studentService.getFaculty(id);
+    }
+
+    @PostMapping
+    public StudentDtoOut createStudent(@RequestBody StudentDtoIn studentDtoIn) {
+        return studentService.createStudent(studentDtoIn);
+    }
+
+    @PutMapping("{id}")
+    public StudentDtoOut editStudent(@PathVariable Long id, @RequestBody StudentDtoIn studentDtoIn) {
+        return studentService.editStudent(id, studentDtoIn);
+    }
+
+    @DeleteMapping("{id}")
+    public StudentDtoOut deleteStudent(@PathVariable Long id) {
+        return studentService.deleteStudent(id);
+    }
+
 }
