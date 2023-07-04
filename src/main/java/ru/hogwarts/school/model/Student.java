@@ -10,16 +10,11 @@ public class Student {
     private String name;
     private int age;
     @ManyToOne
-    @JoinColumn(name = "faculty_id")
+    @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculty faculty;
 
     public Student() {
 
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" + "id=" + id + ", name='" + name + '\'' + ", age=" + age + '}';
     }
 
     public Long getId() {
@@ -53,4 +48,15 @@ public class Student {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", faculty=" + faculty +
+                '}';
+    }
+
 }

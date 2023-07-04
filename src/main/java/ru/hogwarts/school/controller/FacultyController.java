@@ -23,8 +23,8 @@ public class FacultyController {
     }
 
     @GetMapping("/filter")
-    public List<FacultyDtoOut> findByColorOrName(@RequestParam String colorOrName) {
-        return facultyService.findByColorOrName(colorOrName);
+    public List<FacultyDtoOut> findByColorOrName(@RequestParam String name) {
+        return facultyService.findByName(name);
     }
 
     @GetMapping("/{id}/students")

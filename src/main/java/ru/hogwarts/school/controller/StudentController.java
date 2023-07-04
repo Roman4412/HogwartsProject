@@ -24,6 +24,11 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
+    @PostMapping
+    public StudentDtoOut createStudent(@RequestBody StudentDtoIn studentDtoIn) {
+        return studentService.createStudent(studentDtoIn);
+    }
+
     @GetMapping("{id}")
     public StudentDtoOut getStudent(@PathVariable Long id) {
         return studentService.findStudent(id);
@@ -44,11 +49,6 @@ public class StudentController {
         return studentService.getFaculty(id);
     }
 
-    @PostMapping
-    public StudentDtoOut createStudent(@RequestBody StudentDtoIn studentDtoIn) {
-        return studentService.createStudent(studentDtoIn);
-    }
-
     @PutMapping("{id}")
     public StudentDtoOut editStudent(@PathVariable Long id, @RequestBody StudentDtoIn studentDtoIn) {
         return studentService.editStudent(id, studentDtoIn);
@@ -60,11 +60,11 @@ public class StudentController {
     }
 
     @PutMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-     public ResponseEntity<String> uploadAvatar(@PathVariable long studentId, @RequestParam MultipartFile avatar) throws IOException {
+     public ResponseEntity<String> uploadAvatar(@PathVariable long id, @RequestParam MultipartFile avatar) throws IOException {
         if(avatar.getSize() >= 1024*300) {
             return ResponseEntity.badRequest().body("File is too big");
         }
-            avatarService.uploadAvatar(studentId,avatar);
+            avatarService.uploadAvatar(id,avatar);
             return ResponseEntity.ok().build();
     }
 
