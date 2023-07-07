@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -57,4 +58,6 @@ public class Faculty {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+
 }

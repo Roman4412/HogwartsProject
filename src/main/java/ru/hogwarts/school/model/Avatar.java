@@ -1,12 +1,18 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
+import org.hibernate.annotations.Type;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
 public class Avatar {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -23,26 +29,22 @@ public class Avatar {
     public Avatar() {
     }
 
-    public Avatar(Long id, String filePath, String mediaType, long fileSize, byte[] data, Student student) {
+    public Avatar(Long id, String filePath, String mediaType, long fileSize, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.mediaType = mediaType;
         this.fileSize = fileSize;
-        this.data = data;
         this.student = student;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Avatar avatar = (Avatar) o;
-        return fileSize == avatar.fileSize
-                && Objects.equals(id, avatar.id)
-                && Objects.equals(filePath, avatar.filePath)
-                && Objects.equals(mediaType, avatar.mediaType)
-                && Arrays.equals(data, avatar.data)
-                && Objects.equals(student, avatar.student);
+        return fileSize == avatar.fileSize && Objects.equals(id, avatar.id) && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(data, avatar.data) && Objects.equals(student, avatar.student);
     }
 
     @Override
@@ -50,6 +52,18 @@ public class Avatar {
         int result = Objects.hash(id, filePath, mediaType, fileSize, student);
         result = 31 * result + Arrays.hashCode(data);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Avatar{" +
+                "id=" + id +
+                ", filePath='" + filePath + '\'' +
+                ", mediaType='" + mediaType + '\'' +
+                ", fileSize=" + fileSize +
+                ", data=" + Arrays.toString(data) +
+                ", student=" + student +
+                '}';
     }
 
     public Long getId() {

@@ -21,7 +21,10 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
 
-    public StudentService(StudentRepo studentRepo, FacultyRepo facultyRepo, StudentMapper studentMapper, FacultyMapper facultyMapper) {
+    public StudentService(StudentRepo studentRepo,
+                          FacultyRepo facultyRepo,
+                          StudentMapper studentMapper,
+                          FacultyMapper facultyMapper) {
         this.studentRepo = studentRepo;
         this.facultyRepo = facultyRepo;
         this.studentMapper = studentMapper;
@@ -40,7 +43,7 @@ public class StudentService {
                     Optional.ofNullable(studentDtoIn.getFacultyId())
                             .ifPresent(facultyId ->
                                     oldStudent.setFaculty(facultyRepo.findById(facultyId)
-                                    .orElseThrow()));
+                                            .orElseThrow()));
                     return studentMapper.toDto(studentRepo.save(oldStudent));
                 }).orElseThrow();
     }
@@ -75,5 +78,20 @@ public class StudentService {
                 .map(Student::getFaculty)
                 .map(facultyMapper::toDto)
                 .orElseThrow();
+    }
+
+    public List<Student> getAll() {
+        return studentRepo.getAll();
+    }
+
+    public int getAverageAge() {
+       return studentRepo.getAverageAge();
+    }
+
+    public List<Student> getLastFiveStudents() {
+        return studentRepo.getLastFiveStudents();
+    }
+    public Student findStudentForAvatar(long id) {
+        return studentRepo.findById(id).orElseThrow();
     }
 }
