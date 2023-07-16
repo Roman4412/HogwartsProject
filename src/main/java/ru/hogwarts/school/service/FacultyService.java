@@ -1,5 +1,8 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.dto.FacultyDtoIn;
 import ru.hogwarts.school.dto.FacultyDtoOut;
@@ -21,6 +24,7 @@ public class FacultyService {
     private final StudentRepo studentRepo;
     private final FacultyMapper facultyMapper;
     private final StudentMapper studentMapper;
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     public FacultyService(FacultyRepo facultyRepo, StudentRepo studentRepo, FacultyMapper facultyMapper, StudentMapper studentMapper) {
         this.facultyRepo = facultyRepo;
@@ -30,10 +34,12 @@ public class FacultyService {
     }
 
     public FacultyDtoOut createFaculty(FacultyDtoIn facultyDtoIn) {
+        logger.debug("createFaculty is executed");
         return facultyMapper.toDto(facultyRepo.save(facultyMapper.toEntity(facultyDtoIn)));
     }
 
     public FacultyDtoOut editFaculty(long id, FacultyDtoIn facultyDtoIn) {
+        logger.debug("editFaculty is executed");
         return facultyRepo.findById(id)
                 .map(oldFaculty -> {
                     oldFaculty.setName(facultyDtoIn.getName());
@@ -43,6 +49,7 @@ public class FacultyService {
     }
 
     public FacultyDtoOut deleteFaculty(Long id) {
+        logger.debug("deleteFaculty is executed");
         Faculty faculty = facultyRepo.findById(id).orElseThrow();
         facultyRepo.delete(faculty);
         return facultyMapper.toDto(faculty);
@@ -50,12 +57,14 @@ public class FacultyService {
 
 
     public FacultyDtoOut findFaculty(Long id) {
+        logger.debug("findFaculty is executed");
         return facultyRepo.findById(id)
                 .map(facultyMapper::toDto)
                 .orElseThrow();
     }
 
     public List<FacultyDtoOut> findByName(String name) {
+        logger.debug("findByName is executed");
         return facultyRepo.findAllByNameContainingIgnoreCase(name)
                 .stream()
                 .map(facultyMapper::toDto)
@@ -63,6 +72,7 @@ public class FacultyService {
     }
 
     public List<StudentDtoOut> getStudentsInFaculty(long id) {
+        logger.debug("getStudentsInFaculty is executed");
         return studentRepo.findAllByFacultyId(id).stream()
                 .map(studentMapper::toDto)
                 .collect(Collectors.toList());

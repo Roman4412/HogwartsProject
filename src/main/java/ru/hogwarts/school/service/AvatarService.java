@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class AvatarService {
     private final AvatarRepo avatarRepo;
     private final StudentRepo studentRepo;
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarService(AvatarRepo avatarRepo, StudentRepo studentRepo) {
         this.avatarRepo = avatarRepo;
@@ -26,10 +29,12 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(long studentId) {
+        logger.debug("findAvatar is executed");
         return avatarRepo.findByStudent_Id(studentId).orElseThrow();
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.debug("uploadAvatar is executed");
         Student student = studentRepo.getReferenceById(studentId);
         Path filePath = Path.of("/avatars", student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -38,7 +43,7 @@ public class AvatarService {
                 InputStream is = avatarFile.getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
         ) {
             bis.transferTo(bos);
         }
@@ -55,6 +60,7 @@ public class AvatarService {
     }
 
     public List<Avatar> getAll(int pageNum,int pageSize) {
+        logger.debug("getAll is executed");
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
         return avatarRepo.getAll(pageRequest);
     }

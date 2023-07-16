@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
@@ -20,6 +22,7 @@ public class StudentService {
     private final FacultyRepo facultyRepo;
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
+    public final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public StudentService(StudentRepo studentRepo,
                           FacultyRepo facultyRepo,
@@ -32,10 +35,12 @@ public class StudentService {
     }
 
     public StudentDtoOut createStudent(StudentDtoIn studentDtoIn) {
+        logger.debug("createStudent is executed");
         return studentMapper.toDto(studentRepo.save(studentMapper.toEntity(studentDtoIn)));
     }
 
     public StudentDtoOut editStudent(long id, StudentDtoIn studentDtoIn) {
+        logger.debug("editStudent is executed");
         return studentRepo.findById(id)
                 .map(oldStudent -> {
                     oldStudent.setName(studentDtoIn.getName());
@@ -49,6 +54,7 @@ public class StudentService {
     }
 
     public StudentDtoOut deleteStudent(Long id) {
+        logger.debug("deleteStudent is executed");
         Student student = studentRepo.findById(id).orElseThrow();
         studentRepo.delete(student);
         return studentMapper.toDto(student);
@@ -56,10 +62,12 @@ public class StudentService {
 
 
     public StudentDtoOut findStudent(Long id) {
+        logger.debug("findStudent is executed");
         return studentRepo.findById(id).map(studentMapper::toDto).orElseThrow();
     }
 
     public List<StudentDtoOut> findAllByAge(Integer age) {
+        logger.debug("findAllByAge is executed");
         return Optional.ofNullable(age)
                 .map(studentRepo::findAllByAgeIs)
                 .orElseGet(studentRepo::findAll).stream()
@@ -68,12 +76,14 @@ public class StudentService {
     }
 
     public List<StudentDtoOut> findByAgeBetween(int ageFrom, int ageTo) {
+        logger.debug("findByAgeBetween is executed");
         return studentRepo.findByAgeBetween(ageFrom, ageTo).stream()
                 .map(studentMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public FacultyDtoOut getFaculty(long id) {
+        logger.debug("getFaculty is executed");
         return studentRepo.findById(id)
                 .map(Student::getFaculty)
                 .map(facultyMapper::toDto)
@@ -81,16 +91,20 @@ public class StudentService {
     }
 
     public List<Student> getAll() {
+        logger.debug("getAll is executed");
         return studentRepo.getAll();
     }
 
     public int getAverageAge() {
-       return studentRepo.getAverageAge();
+        logger.debug("getAverageAge is executed");
+        return studentRepo.getAverageAge();
     }
 
     public List<Student> getLastFiveStudents() {
+        logger.debug("getLastFiveStudents is executed");
         return studentRepo.getLastFiveStudents();
     }
+
     public Student findStudentForAvatar(long id) {
         return studentRepo.findById(id).orElseThrow();
     }
