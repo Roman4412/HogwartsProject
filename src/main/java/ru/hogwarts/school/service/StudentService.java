@@ -12,6 +12,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepo;
 import ru.hogwarts.school.repository.StudentRepo;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,7 +98,7 @@ public class StudentService {
 
     public int getAverageAge() {
         logger.debug("getAverageAge is executed");
-        return studentRepo.getAverageAge();
+        return (int) studentRepo.getAll().stream().mapToInt(Student::getAge).average().orElseThrow();
     }
 
     public List<Student> getLastFiveStudents() {
@@ -107,5 +108,14 @@ public class StudentService {
 
     public Student findStudentForAvatar(long id) {
         return studentRepo.findById(id).orElseThrow();
+    }
+
+    public List<Student> getStudentWhoseNameStartsWithA() {
+        logger.debug("getStudentWhoseNameStartsWithA is executed");
+        return studentRepo.getAll()
+                .stream()
+                .filter(student -> student.getName().startsWith("A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .collect(Collectors.toList());
     }
 }

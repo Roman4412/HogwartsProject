@@ -1,5 +1,6 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class Student {
     private int age;
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Faculty faculty;
 
     public Student() {

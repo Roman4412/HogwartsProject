@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepo;
 import ru.hogwarts.school.repository.StudentRepo;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,4 +77,12 @@ public class FacultyService {
                 .map(studentMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public String getLongestName() {
+        return facultyRepo.findAll()
+                .stream()
+                .max(Comparator.comparingInt(o -> o.getName().length()))
+                .orElseThrow().getName();
+    }
+
 }

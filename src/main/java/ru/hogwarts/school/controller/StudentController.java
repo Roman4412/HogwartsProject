@@ -68,5 +68,8 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
-
+    @GetMapping("/all/starting-a-name")
+    public List<Student> getStudentWhoseNameStartsWithA() {
+        return studentService.getStudentWhoseNameStartsWithA();
+    }
 }

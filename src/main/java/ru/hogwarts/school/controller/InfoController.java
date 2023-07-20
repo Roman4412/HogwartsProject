@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class InfoController {
 
     @Value("${server.port}")
-    private Integer port;
+    private String port;
+
     @GetMapping("/getPort")
-    public ResponseEntity<Integer> getPort() {
+    public ResponseEntity<String> getPort() {
         return ResponseEntity.ok(port);
     }
 }
