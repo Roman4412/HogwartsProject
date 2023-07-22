@@ -81,9 +81,9 @@ public class FacultyService {
     public String getLongestName() {
         return facultyRepo.findAll()
                 .stream()
-                .max(Comparator.comparingInt(o -> o.getName().length()))
-                .orElseThrow().getName();
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow();
     }
-
 
 }
