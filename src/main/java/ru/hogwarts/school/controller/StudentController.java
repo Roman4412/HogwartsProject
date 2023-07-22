@@ -72,4 +72,9 @@ public class StudentController {
     public List<Student> getStudentWhoseNameStartsWithA() {
         return studentService.getStudentWhoseNameStartsWithA();
     }
+
+    @GetMapping("/stream")
+    public String getStream() {
+        return studentService.getStream();
+    }
 }

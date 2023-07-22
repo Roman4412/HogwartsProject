@@ -16,6 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -117,5 +119,24 @@ public class StudentService {
                 .filter(student -> student.getName().startsWith("A"))
                 .sorted(Comparator.comparing(Student::getName))
                 .collect(Collectors.toList());
+    }
+
+    public String getStream() {
+        long t1 = System.nanoTime();
+        int sum1 = Stream.iterate(1, a -> a + 1).limit(1_000_000).reduce(0, Integer::sum);
+        long defaultTime = System.nanoTime() - t1;
+
+
+        long t2 = System.nanoTime();
+        int sum2 = IntStream.iterate(1, a -> a + 1).limit(1_000_000).reduce(0, Integer::sum);
+        long improvedTime = System.nanoTime() - t2;
+
+        return "sum1 = " + sum1
+                + "\n"
+                + "sum2 = " + sum2
+                + "\n"
+                + "default time = " + defaultTime
+                + "\n"
+                + "improvedTime = " + improvedTime;
     }
 }
