@@ -77,4 +77,14 @@ public class StudentController {
     public String getStream() {
         return studentService.getStream();
     }
+
+    @GetMapping("/threads")
+    public void getStudents() {
+        studentService.getStudents();
+    }
+
+    @GetMapping("/threads-v2")
+    public void getSynStudents() {
+        studentService.getSynStudentsV2();
+    }
 }
