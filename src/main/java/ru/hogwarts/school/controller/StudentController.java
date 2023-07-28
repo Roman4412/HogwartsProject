@@ -83,8 +83,8 @@ public class StudentController {
         studentService.getStudents();
     }
 
-    @GetMapping("/threads-v2")
-    public void getSynStudents() {
-        studentService.getSynStudentsV2();
+    @GetMapping("/threads-sync")
+    public void getStudentsSync() {
+        studentService.getStudentsSync();
     }
 }

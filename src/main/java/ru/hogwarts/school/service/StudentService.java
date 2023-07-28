@@ -142,67 +142,57 @@ public class StudentService {
 
     public void getStudents() {
         List<Student> students = studentRepo.getAll();
-        Thread tMain = Thread.currentThread();
-        Thread.currentThread().setName("main");
 
         Thread thread1 = new Thread(() -> {
-            Thread t1 = Thread.currentThread();
-            System.out.println(students.get(2).getName() + " " + t1.getName());
-            System.out.println(students.get(3).getName() + " " + t1.getName());
-        }, "thread1");
+            logger.info("thread 1 started");
+            printName(students, 2);
+            printName(students, 3);
+        });
 
         Thread thread2 = new Thread(() -> {
-            Thread t2 = Thread.currentThread();
-            System.out.println(students.get(4).getName() + " " + t2.getName());
-            System.out.println(students.get(5).getName() + " " + t2.getName());
-        }, "thread2");
+            logger.info("thread 2 started");
+            printName(students, 4);
+            printName(students, 5);
+        });
 
+        logger.info("thread main started");
+        printName(students, 0);
+        printName(students, 1);
         thread1.start();
         thread2.start();
-        System.out.println(students.get(0).getName() + " " + tMain.getName());
-        System.out.println(students.get(1).getName() + " " + tMain.getName());
-
     }
 
 
-    public void getSynStudentsV2() {
-        Thread tMain = Thread.currentThread();
-        Thread.currentThread().setName("main");
-
-
-        Thread thread1 = new Thread(() -> {
-            Thread t1 = Thread.currentThread();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            printName(2, t1);
-            printName(3, t1);
-        }, "thread1");
-
-        Thread thread2 = new Thread(() -> {
-            Thread t2 = Thread.currentThread();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            printName(4, t2);
-            printName(5, t2);
-        }, "thread2");
-
-        printName(0, tMain);
-        printName(1, tMain);
-        thread1.start();
-        thread2.start();
-
-    }
-
-    public void printName(int index, Thread t) {
+    public void getStudentsSync() {
         List<Student> students = studentRepo.getAll();
-        System.out.println(students.get(index).getName()
-                + "_"
-                + t.getName());
+
+        Thread thread1 = new Thread(() -> {
+            logger.info("thread 1 starting");
+            printNameSync(students, 2);
+            printNameSync(students, 3);
+            logger.info("thread 1 ending");
+        });
+
+        Thread thread2 = new Thread(() -> {
+            logger.info("thread 2 starting");
+            printNameSync(students, 4);
+            printNameSync(students, 5);
+            logger.info("thread 2 ending");
+        });
+
+        thread1.start();
+        thread2.start();
+        logger.info("thread main starting");
+        printNameSync(students, 0);
+        printNameSync(students, 1);
+        logger.info("thread main ending");
+    }
+
+    public void printName(List<Student> collection, int index) {
+        System.out.println(collection.get(index).getName());
+    }
+
+    public synchronized void printNameSync(List<Student> collection, int index) {
+        System.out.println(collection.get(index).getName());
     }
 }
