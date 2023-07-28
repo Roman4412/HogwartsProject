@@ -68,5 +68,23 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
+    @GetMapping("/all/starting-a-name")
+    public List<Student> getStudentWhoseNameStartsWithA() {
+        return studentService.getStudentWhoseNameStartsWithA();
+    }
 
+    @GetMapping("/stream")
+    public String getStream() {
+        return studentService.getStream();
+    }
+
+    @GetMapping("/threads")
+    public void getStudents() {
+        studentService.getStudents();
+    }
+
+    @GetMapping("/threads-sync")
+    public void getStudentsSync() {
+        studentService.getStudentsSync();
+    }
 }
